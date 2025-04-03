@@ -29,3 +29,37 @@ export const generatePassword = (length = 12, includeSpecial = true) => {
     throw new Error('Não foi possivel gerar uma senha segura');
   }
 };
+
+/**
+ * Valida a força de uma senha fornecida
+ * @param {string} password - A senha a ser avaliada.
+ * @returns {Object} - Resultado da avaliação de segurança
+ */
+
+export const validatePassword = (password) => {
+  try {
+    if (!password) {
+      return {
+        valid: false,
+        message: 'Senha não fornecida',
+      };
+    }
+
+    const evaluation = evaluatePasswordStrength(password);
+    const isValid = meetsMinimumRequirements(password);
+
+    logger.info(`Senha validada: ${isValid ? 'aprovada' : 'reprovada'}`);
+
+    return {
+      valid: isValid,
+      streagth: evaluation.strength,
+      score: evaluation.score,
+      details: evaluation.details,
+      feedback: evaluation.feedback,
+    };
+  } catch (error) {
+    logger.error(`Erro na validação da senha: ${error.message}`);
+    throw new Error('Não foi possivel validar a senha');
+  }
+};
+
