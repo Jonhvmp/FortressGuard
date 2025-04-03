@@ -23,3 +23,29 @@ export const generateHash = (text) => {
     throw new Error('Erro ao gerar hash');
   }
 };
+
+/**
+ * Criptografa um texto usando AES-256-CBC.
+ * @param {string} text - O texto p/ criptografar
+ * @return {string} - O texto criptografado em form hex
+ */
+
+export const encryptText = (text) => {
+  try {
+    const iv = crypto.randomBytes(16); // vetor inicial
+    const cipher = crypto.createCipheriv(
+      ENCRYPTION_ALGORITHMS.AES,
+      Buffer.from(ENCRYPTION_KEY),
+      iv
+    );
+
+    let encrypted = cipher.update(text, 'utf8', 'hex');
+    encrypted += cipher.final('hex');
+
+    // concatena o vetor inicial com o texto criptografado
+    return iv.toString('hex') + ':' + encrypted;
+  } catch (error) {
+    logger.error(`Erro ao criptografar texto: ${error.message}`);
+    throw new Error('Erro ao criptografar texto');
+  }
+};
