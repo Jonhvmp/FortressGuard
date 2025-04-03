@@ -73,3 +73,14 @@ export const evaluatePasswordStrength = (password) => {
     };
   }
 };
+
+/**
+ * Verifica se uma atende aos requisitos mínimos de segurança.
+ * @param {string} password - A senha a ser verificada.
+ * @return {boolean} - Verdadeiro se a senha atende aos requisitos, falso caso contrário.
+ */
+
+export const meetsMinimumRequirements = (password) => {
+  const evaluation = evaluatePasswordStrength(password);
+  return evaluation.score >= 3; // média ou melhor
+};
