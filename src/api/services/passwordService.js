@@ -63,3 +63,25 @@ export const validatePassword = (password) => {
   }
 };
 
+/**
+ * Gera um hash seguro para uma senha
+ * @param {string} password - A senha a ser hashada.
+ * @returns {string} - O hash gerado.
+ */
+
+export const hashPassword = (password) => {
+  try {
+    if (!password) {
+      throw new Error('Senha não fornecida');
+    }
+
+    const hash = generateHash(password);
+
+    logger.info('Hash gerado com sucesso');
+
+    return hash;
+  } catch (error) {
+    logger.error(`Erro ao gerar hash: ${error.message}`);
+    throw new Error('Não foi possivel gerar o hash da senha');
+  }
+}
