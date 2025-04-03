@@ -49,3 +49,35 @@ export const encryptText = (text) => {
     throw new Error('Erro ao criptografar texto');
   }
 };
+
+/**
+ * Descriptografa um texto criptografado com AES-256-CBC.
+ * @param {string} encryptedText - Texto criptografado no formato IV:TextoCriptografado
+ * @return {string} - O texto descriptografado.
+ */
+
+export const decryptText = (encryptedText) => {
+  try {
+    const [ivHex, encrypted] = encryptedText.split(':');
+
+    if (!ivHex || !encrypted) {
+      throw new Error('Formato de texto criptografado inválido');
+    }
+
+    const iv = Buffer.from(ivHex, 'hex');
+    const decipher = crypto.createDecipheriv(
+      ENCRYPTION_ALGORITHMS.AES,
+      Buffer.from(ENCRYPTION_KEY),
+      iv
+    );
+
+    let decrypted = decipher.update(encrypted, 'hex', 'utf8');
+    decrypted += decipher.final('utf8');
+
+    return decrypted;
+  } catch (error) {
+    logger.error(`Erro ao descriptografar texto: ${error.message}`);
+    throw new Error('Erro ao descriptografar texto');
+  }
+};
+
