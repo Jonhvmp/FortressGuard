@@ -34,3 +34,36 @@ export const encrypt = (text) => {
     };
   }
 };
+
+/**
+ * Descriptografa um texto criptografado
+ * @param {string} encryptedText - O texto criptografado a ser descriptografado
+ * @returns {Object} - Resultado da operação de descriptografia
+ */
+
+export const decrypt = (encryptedText) => {
+  try {
+    if (!encryptedText) {
+      return {
+        sucess: false,
+        message: 'Texto criptografado não fornecido',
+      };
+    }
+
+    const decrypted = decryptText(encryptedText);
+    logger.info('Texto descriptografado com sucesso');
+
+    return {
+      sucess: true,
+      decryptedText: decrypted,
+      length: decrypted.length,
+    };
+  } catch (error) {
+    logger.error(`Erro ao descriptografar texto: ${error.message}`);
+    return {
+      sucess: false,
+      message: 'Erro ao descriptografar texto',
+      error: error.message,
+    };
+  }
+};
