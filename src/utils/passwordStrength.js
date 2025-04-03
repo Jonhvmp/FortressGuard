@@ -84,3 +84,22 @@ export const meetsMinimumRequirements = (password) => {
   const evaluation = evaluatePasswordStrength(password);
   return evaluation.score >= 3; // média ou melhor
 };
+
+/**
+ * Gera dicas para melhorar a seguranã de uma senha.
+ * @param {string} password - A senha a receber sugestões.
+ * @returns {Array<string>} - Lista de sugestões de melhoria
+ */
+
+export const getPasswordImprovement = (password) => {
+  const evaluation = evaluatePasswordStrength(password);
+
+  return evaluation.feedback
+    .split('.')
+    .filter(item =>
+      item.includes('Adicione') ||
+      item.includes('Deve ter')
+    )
+    .map(item => item.trim())
+    .filter(item => item.length > 0);
+}
