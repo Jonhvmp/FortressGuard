@@ -81,3 +81,34 @@ export const decryptText = (encryptedText) => {
   }
 };
 
+/**
+ * Gera uma string aleatória para uso em senhas ou tokens.
+ * @param {number} length - O comprimento da string gerada.
+ * @param {booolean} includeSpecialChars - Se deve incluir caracteres especiais.
+ * @return {string} - A string aleatória gerada.
+ */
+
+export const generateRandomString = (length = 12, includeSpecialChars = true) => {
+  try {
+    const upperChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    const lowerChars = 'abcdefghijklmnopqrstuvwxyz';
+    const numbers = '0123456789';
+    const special = '!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~';
+
+    let chars = upperChars + lowerChars + numbers;
+    if (includeSpecialChars) chars += special;
+
+    let result = '';
+    const randomValues = crypto.randomBytes(length);
+
+    for (let i = 0; i < length; i++) {
+      const randomIndex = randomValues[i] % chars.length;
+      result += chars.charAt(randomIndex);
+    }
+
+    return result;
+  } catch (error) {
+    logger.error(`Erro ao gerar string aleatória: ${error.message}`);
+    throw new Error('Erro ao gerar string aleatória');
+  }
+};
