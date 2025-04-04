@@ -1,5 +1,5 @@
 import express from "express";
-import { generatePasswordController } from "../controllers/securityController";
+import { generatePasswordController, validatePasswordController } from "../controllers/securityController";
 
 const router = express.Router();
 
@@ -12,3 +12,13 @@ const router = express.Router();
  * @returns {Object} - Senha gerada e sua classificação de segurança
  */
 router.get("/generate-password", generatePasswordController);
+
+
+/**
+ * @route GET /api/validate-password
+ * @desc Valida a força de uma senha
+ * @access Public
+ * @query {string} password - A senha a ser validada
+ * @returns {Object} - Resultado da validação de segurança
+ */
+router.get("/validate-password", validatePasswordController);
