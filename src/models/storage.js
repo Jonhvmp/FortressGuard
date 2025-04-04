@@ -81,7 +81,7 @@ export const recordEncryption = (sucess) => {
  * @param {Object} details - Detalhes da ação (sem dados sensíveis)
  */
 
-const addToHisory = (action, details) => {
+const addToHistory = (action, details) => {
   try {
     const event = {
       timestamp: new Date().toISOString(),
@@ -90,7 +90,7 @@ const addToHisory = (action, details) => {
     };
 
     // limita o historico a 100 itens
-    inMemoryStorage.histor.unshift(event);
+    inMemoryStorage.history.unshift(event);
     if (inMemoryStorage.history.length > 100) {
       inMemoryStorage.history.pop();
     }

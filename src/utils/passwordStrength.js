@@ -17,7 +17,7 @@ export const evaluatePasswordStrength = (password) => {
       };
     }
 
-    const hasLength = password.length >= PASSWORD_CRITERIA
+    const hasLength = password.length >= PASSWORD_CRITERIA.MIN_LENGTH;
     const hasUppercase = /[A-Z]/.test(password);
     const hasLowercase = /[a-z]/.test(password);
     const hasNumbers = /[0-9]/.test(password);
@@ -46,8 +46,8 @@ export const evaluatePasswordStrength = (password) => {
     }
 
     if (!hasLength) feedback.push(`A senha deve ter pelo menos ${PASSWORD_CRITERIA.MIN_LENGTH} caracteres.`);
-    if (!hasUpperCase) feedback.push('Adicione letras maiúsculas para aumentar a segurança.');
-    if (!hasLowerCase) feedback.push('Adicione letras minúsculas para aumentar a segurança.');
+    if (!hasUppercase) feedback.push('Adicione letras maiúsculas para aumentar a segurança.');
+    if (!hasLowercase) feedback.push('Adicione letras minúsculas para aumentar a segurança.');
     if (!hasNumbers) feedback.push('Adicione números para aumentar a segurança.');
     if (!hasSpecialChars) feedback.push('Adicione caracteres especiais para aumentar a segurança.');
 
