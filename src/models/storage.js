@@ -98,3 +98,23 @@ const addToHisory = (action, details) => {
     logger.error(`Erro ao adicionar ao histórico: ${error.message}`);
   }
 };
+
+/**
+ * Obtém as estatísticas acumuladas
+ * @returns {Object} - Estatísticas de uso da API
+ */
+
+export const getStatistics = () => {
+  return { ...inMemoryStorage.stats };
+}
+
+/**
+ * Obtém o histórico de eventos recentes
+ * @param {number} limit - Número máximo de eventos a retornar
+ * @returns {Array} - Histórico de eventos
+ */
+
+export const getHistory = (limit = 10) => {
+  const actualLimit = Math.min(Math.max(1, limit), 100)
+  return inMemoryStorage.history.slice(0, actualLimit);
+};
