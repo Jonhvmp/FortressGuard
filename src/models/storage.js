@@ -75,3 +75,26 @@ export const recordEncryption = (sucess) => {
   }
 };
 
+/**
+ * Adiciona uma entrada ao histórico
+ * @param {string} action - Ação realizada
+ * @param {Object} details - Detalhes da ação (sem dados sensíveis)
+ */
+
+const addToHisory = (action, details) => {
+  try {
+    const event = {
+      timestamp: new Date().toISOString(),
+      action,
+      details,
+    };
+
+    // limita o historico a 100 itens
+    inMemoryStorage.histor.unshift(event);
+    if (inMemoryStorage.history.length > 100) {
+      inMemoryStorage.history.pop();
+    }
+  } catch (error) {
+    logger.error(`Erro ao adicionar ao histórico: ${error.message}`);
+  }
+};
