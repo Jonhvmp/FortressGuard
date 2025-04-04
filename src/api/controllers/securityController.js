@@ -1,15 +1,13 @@
-
+import { HTTP_STATUS } from "../../config/constants";
+import { getStatistics, recordEncryption, recordPasswordGeneration } from "../../models/storage";
+import logger from "../../utils/logger";
+import { generatePassword, validatePassword } from "../services/passwordService";
 
 /**
  * Gera uma senha segura com base nos parâmetros da requisição.
  * @param {Object} req - O objeto de requisição.
  * @param {Object} res - O objeto de resposta.
  */
-
-import { HTTP_STATUS } from "../../config/constants";
-import { getStatistics, recordEncryption, recordPasswordGeneration } from "../../models/storage";
-import logger from "../../utils/logger";
-import { generatePassword, validatePassword } from "../services/passwordService";
 
 export const generatePasswordController = (req, res) => {
   try {
