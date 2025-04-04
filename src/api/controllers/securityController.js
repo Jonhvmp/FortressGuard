@@ -7,7 +7,7 @@
  */
 
 import { HTTP_STATUS } from "../../config/constants";
-import { recordEncryption, recordPasswordGeneration } from "../../models/storage";
+import { getStatistics, recordEncryption, recordPasswordGeneration } from "../../models/storage";
 import logger from "../../utils/logger";
 import { generatePassword, validatePassword } from "../services/passwordService";
 
@@ -136,6 +136,41 @@ export const ecryptTextController = (req, res) => {
     res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
       sucess: false,
       message: 'Erro ao criptografar texto',
+      error: error.message,
+    });
+  }
+};
+
+/**
+ * Retorna stats de uso da API
+ * @param {Object} req - O objeto de requisição Express
+ * @param {Object} res - O objeto de resposta Express
+ */
+
+export const getStatisticasController = (req, res) => {
+  try {
+    const stats = getStatistics();
+
+    logger.info(`Estatísticas recuperadas com sucesso`);
+
+    res.status(HTTP_STATUS.OK).json({
+      sucess: true,
+      data: {
+        ...stats,
+        timestamp: new Date().toISOString(),
+        serverInfo: {
+          uptime: process.uptime(),
+          memoryUsage: process.memoryUsage(),
+          nodeVersion: process.version,
+        },
+      },
+    });
+  } catch (error) {
+    logger.error(`Erro ao recuperar estatísticas: ${error.message}`);
+
+    res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
+      sucess: false,
+      message: 'Erro ao recuperar estatísticas',
       error: error.message,
     });
   }
