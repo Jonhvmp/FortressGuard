@@ -1,10 +1,15 @@
 import crypto from 'crypto';
-import { ENCRYPTION_ALGORITHMS } from '../config/constants.js';
-import environment from '../config/environment.js';
 import logger from './logger.js';
+import environment from '../config/environment.js';
+import { ENCRYPTION_ALGORITHMS } from '../config/constants.js';
 
-// chave de cript do ambiente ou usamos uma padrão apenas p/ desen
-const ENCRYPTION_KEY = environment.ENCRYPTION_KEY || '32_defaultEncryptionKey1234567890';
+// Gerar uma chave de 32 bytes (256 bits) adequada para AES-256-CBC
+// usando scrypt para derivação determinística da chave
+const ENCRYPTION_KEY = crypto.scryptSync(
+  environment.encryptionKey,
+  'fortressguard-salt', // Sal fixo para garantir determinismo
+  32  // Exatamente 32 bytes (256 bits)
+);
 
 /**
  * Gera um hash para uma string usando SHA-256.
