@@ -1,7 +1,7 @@
-import { HTTP_STATUS } from "../../config/constants";
-import { getStatistics, recordEncryption, recordPasswordGeneration } from "../../models/storage";
-import logger from "../../utils/logger";
-import { generatePassword, validatePassword } from "../services/passwordService";
+import { HTTP_STATUS } from "../../config/constants.js";
+import { getStatistics, recordEncryption, recordPasswordGeneration } from "../../models/storage.js";
+import logger from "../../utils/logger.js";
+import { generatePassword, validatePassword } from "../services/passwordService.js";
 
 /**
  * Gera uma senha segura com base nos parâmetros da requisição.

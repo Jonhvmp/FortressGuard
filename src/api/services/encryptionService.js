@@ -1,5 +1,5 @@
-import { encryptText, decryptText } from "../../utils/cryptoHelpers";
-import logger from "../../utils/logger";
+import { encryptText, decryptText } from "../../utils/cryptoHelpers.js";
+import logger from "../../utils/logger.js";
 
 /**
  * Criptografa um texto fornecido

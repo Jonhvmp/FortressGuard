@@ -1,5 +1,5 @@
 import express from "express";
-import { encryptTextController, generatePasswordController, getStatisticasController, validatePasswordController } from "../controllers/securityController";
+import { encryptTextController, generatePasswordController, getStatisticasController, validatePasswordController } from "../controllers/securityController.js";
 
 const router = express.Router();
 

@@ -3,9 +3,9 @@ import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
 import compression from "compression";
-import environment from "./config/environment";
-import logger from "./utils/logger";
-import { error } from "winston";
+import environment from "./config/environment.js";
+import logger from "./utils/logger.js";
+import routes from "./api/routes/index.js";
 
 const app = express();
 
@@ -30,6 +30,9 @@ app.get('/health', (req, res) => {
     environment: environment.nodeEnv,
   })
 });
+
+// rotas da API
+app.use(`/api/${environment.apiVersion}`, routes);
 
 // NotFound
 app.use((req, res) => {

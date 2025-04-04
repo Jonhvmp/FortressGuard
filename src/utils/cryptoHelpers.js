@@ -1,5 +1,5 @@
 import crypto from 'crypto';
-import { ENCRYPTION_ALGORITHMS } from '../config/constants';
+import { ENCRYPTION_ALGORITHMS } from '../config/constants.js';
 import environment from '../config/environment.js';
 import logger from './logger.js';
 

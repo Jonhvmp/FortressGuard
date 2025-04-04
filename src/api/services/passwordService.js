@@ -1,6 +1,6 @@
-import { evaluatePasswordStrength, meetsMinimumRequirements } from "../../utils/passwordStrength";
-import { generateRandomString, generateHash } from "../../utils/cryptoHelpers";
-import logger from "../../utils/logger";
+import { evaluatePasswordStrength, meetsMinimumRequirements } from "../../utils/passwordStrength.js";
+import { generateRandomString, generateHash } from "../../utils/cryptoHelpers.js";
+import logger from "../../utils/logger.js";
 
 /**
  * Gera uma senha segura com base nos parâmetros especificos
