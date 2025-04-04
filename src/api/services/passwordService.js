@@ -15,14 +15,14 @@ export const generatePassword = (length = 12, includeSpecial = true) => {
 
     const password = generateRandomString(passwordLength, includeSpecial);
 
-    const streagth = evaluatePasswordStrength(password);
+    const strength = evaluatePasswordStrength(password);
 
     logger.info(`Senha gerada com sucesso (comprimento: ${passwordLength}, caracteres especiais: ${includeSpecial})`);
 
     return {
       password,
-      streagth: streagth.streagth,
-      score: streagth.score,
+      strength: strength.strength,
+      score: strength.score,
     };
   } catch (error) {
     logger.error(`Erro ao gerar senha: ${error.message}`);
@@ -52,7 +52,7 @@ export const validatePassword = (password) => {
 
     return {
       valid: isValid,
-      streagth: evaluation.strength,
+      strength: evaluation.strength,
       score: evaluation.score,
       details: evaluation.details,
       feedback: evaluation.feedback,

@@ -54,3 +54,24 @@ export const recordPasswordValidation = (strength, valid) => {
     logger.error(`Erro ao registrar validação de senha: ${error.message}`);
   }
 };
+
+/**
+ * Registra uma operação de criptografia
+ * @param {boolean} sucess - Se a operação foi bem-sucedida
+ */
+
+export const recordEncryption = (sucess) => {
+  try {
+    if (sucess) {
+      inMemoryStorage.stats.textEncrypted += 1;
+    }
+
+    // add ao historico
+    addToHistory('encrypt_text', { sucess });
+
+    logger.debug('Estatísticas de criptografia atualizadas com sucesso');
+  } catch (error) {
+    logger.error(`Erro ao registrar estatísticas de criptografia: ${error.message}`);
+  }
+};
+
