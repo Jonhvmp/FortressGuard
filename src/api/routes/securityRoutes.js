@@ -1,5 +1,5 @@
 import express from "express";
-import { generatePasswordController, validatePasswordController } from "../controllers/securityController";
+import { encryptTextController, generatePasswordController, validatePasswordController } from "../controllers/securityController";
 
 const router = express.Router();
 
@@ -22,3 +22,12 @@ router.get("/generate-password", generatePasswordController);
  * @returns {Object} - Resultado da validação de segurança
  */
 router.get("/validate-password", validatePasswordController);
+
+/**
+ * @route GET /api/encrypt-text
+ * @desc Criptografa um texto
+ * @access Public
+ * @query {string} text - O texto a ser criptografado
+ * @returns {Object} - Texto criptografado
+ */
+router.get("/encrypt-text", encryptTextController);

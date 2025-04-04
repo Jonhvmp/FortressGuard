@@ -100,7 +100,7 @@ export const validatePasswordController = (req, res) => {
  * @param {Object} res - O objeto de resposta Express
  */
 
-export const ecryptTextController = (req, res) => {
+export const encryptTextController = (req, res) => {
   try {
     const { text } = req.query;
 
