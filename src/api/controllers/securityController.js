@@ -7,7 +7,7 @@
  */
 
 import { HTTP_STATUS } from "../../config/constants";
-import { recordPasswordGeneration } from "../../models/storage";
+import { recordEncryption, recordPasswordGeneration } from "../../models/storage";
 import logger from "../../utils/logger";
 import { generatePassword, validatePassword } from "../services/passwordService";
 
@@ -91,6 +91,51 @@ export const validatePasswordController = (req, res) => {
     res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
       sucess: false,
       message: 'Falha ao validar senha',
+      error: error.message,
+    });
+  }
+};
+
+/**
+ * Criptografa um texto fornecido
+ * @param {Object} req - O objeto de requisição Express
+ * @param {Object} res - O objeto de resposta Express
+ */
+
+export const ecryptTextController = (req, res) => {
+  try {
+    const { text } = req.query;
+
+    if (!text) {
+      return res.status(HTTP_STATUS.BAD_REQUEST).json({
+        sucess: false,
+        error: 'Parâmetro obrigatório ausente',
+        message: 'O parâmetro "text" é obrigatório',
+      });
+    }
+
+    // chamar serviço p criptografar texto
+    const result = encrypt(text);
+
+    recordEncryption(result.sucess);
+
+    logger.info(`Texto criptografado com sucesso`);
+
+    res.status(HTTP_STATUS.OK).json({
+      sucess: true,
+      data: {
+        encryptedText: result.encryptedText,
+        originalLength: result.originalLength,
+        encryptedLength: result.encryptedLength,
+        timestamp: new Date().toISOString(),
+      },
+    });
+  } catch (error) {
+    logger.error(`Erro ao criptografar texto: ${error.message}`);
+
+    res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
+      sucess: false,
+      message: 'Erro ao criptografar texto',
       error: error.message,
     });
   }
