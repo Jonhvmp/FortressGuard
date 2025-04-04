@@ -20,18 +20,37 @@ const inMemoryStorage = {
 
 /**
  * Registra uma nova geração de senha nas estatísticas
- * @param {string} streagth - Força da senha gerada
+ * @param {string} strength - Força da senha gerada
  */
-export const recordPasswordGeneration = (streagth) => {
+export const recordPasswordGeneration = (strength) => {
   try {
     inMemoryStorage.stats.passwordsdGenerated += 1;
-    inMemoryStorage.stats.stregthDistribution[streagth] += 1;
+    inMemoryStorage.stats.stregthDistribution[strength] += 1;
 
     // add ao historico
-    addToHistory('generate_password', { streagth });
+    addToHistory('generate_password', { strength });
 
     logger.debug('Estatísticas de geração de senha atualizadas com sucesso');
   } catch (error) {
     logger.error(`Erro ao registrar geração de senha: ${error.message}`);
+  }
+};
+
+/**
+ * Registra uma validação de senha nas estatísticas
+ * @param {string} strength - Força da senha validada
+ * @param {boolean} valid - Se a senha atente aos requisitos mínimos
+ */
+
+export const recordPasswordValidation = (strength, valid) => {
+  try {
+    inMemoryStorage.stats.passwordsValidated += 1;
+
+    // add ao historico
+    addToHistory('validate_password', { strength, valid });
+
+    logger.debug('Estatísticas de validação de senha atualizadas com sucesso');
+  } catch (error) {
+    logger.error(`Erro ao registrar validação de senha: ${error.message}`);
   }
 };
