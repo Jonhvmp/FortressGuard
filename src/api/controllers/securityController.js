@@ -3,6 +3,7 @@ import { getStatistics, recordEncryption, recordPasswordGeneration, recordPasswo
 import logger from "../../utils/logger.js";
 import { generatePassword, validatePassword } from "../services/passwordService.js";
 import { encrypt } from "../services/encryptionService.js";
+// import { error } from "winston";
 
 /**
  * Gera uma senha segura com base nos parâmetros da requisição.
@@ -12,8 +13,59 @@ import { encrypt } from "../services/encryptionService.js";
 
 export const generatePasswordController = (req, res) => {
   try {
-    // extrair parâmetros da query
-    const length = parseInt(req.query.length, 10) || 12;
+
+    const MIN_LENGTH = 8;
+    const MAX_LENGTH = 32;
+
+    const allowedParams = ['length', 'special'];
+    const receivedParams = Object.keys(req.query);
+
+
+    const invalidParams = receivedParams.filter(param =>
+      !allowedParams.includes(param) && param !== ''
+    );
+
+    if (invalidParams.length > 0) {
+      return res.status(HTTP_STATUS.BAD_REQUEST).json({
+        success: false,
+        error: 'Parâmetros inválidos',
+        message: 'Os seguintes parâmetros são inválidos: ' + invalidParams.join(', '),
+        allowedParams: allowedParams,
+      });
+    }
+
+    let length;
+
+    if (req.query.length) {
+      if (!/^\d+$/.test(req.query.length)) {
+        return res.status(HTTP_STATUS.BAD_REQUEST).json({
+          success: false,
+          error: 'Parâmetro inválido',
+          message: 'O parâmetro "length" deve ser um número inteiro positivo',
+        });
+      }
+
+      length = parseInt(req.query.length, 10) || 12;
+    } else {
+      length = 12; // default
+    }
+
+    if (length < MIN_LENGTH || length > MAX_LENGTH) {
+      return res.status(HTTP_STATUS.BAD_REQUEST).json({
+        success: false,
+        error: 'Parâmetro inválido',
+        message: `O comprimento da senha deve ser entre ${MIN_LENGTH} e ${MAX_LENGTH} caracteres`,
+      });
+    }
+
+    if (req.query.special !== undefined && req.query.special !== 'true' && req.query.special !== 'false') {
+      return res.status(HTTP_STATUS.BAD_REQUEST).json({
+        success: false,
+        error: 'Formato inválido',
+        message: 'O parâmetro "special" deve ser "true" ou "false"',
+      });
+    }
+    
     const includeSpecial = req.query.special !== 'false'; // padrão é true
 
     // chamar serviço p gerar senha
@@ -43,7 +95,7 @@ export const generatePasswordController = (req, res) => {
     res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
       success: false,
       message: 'Erro ao gerar senha',
-      error: error.message,
+      // error: error.message,
     });
   }
 };

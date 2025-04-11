@@ -12,6 +12,14 @@ const router = express.Router();
  * @returns {Object} - Senha gerada e sua classificação de segurança
  */
 router.get("/generate-password", generatePasswordController);
+/**
+ * Exemplos de uso:
+ * GET /api/generate-password?length=12&special=true
+ * GET /api/generate-password?length=16&special=false
+ * GET /api/generate-password?length=8
+ * GET /api/generate-password?special=false
+ * GET /api/generate-password
+ */
 
 
 /**
