@@ -11,16 +11,16 @@ export const encrypt = (text) => {
   try {
     if (!text) {
       return {
-        sucess: false,
+        success: false,
         message: 'Texto não forncecido para criptografia',
       };
     }
 
     const encrypted = encryptText(text);
-    logger.info('Texto criptografado com sucesso');
+    logger.info('Texto criptografado com successo');
 
     return {
-      sucess: true,
+      success: true,
       encryptedText: encrypted,
       originalLength: text.length,
       encryptedLength: encrypted.length,
@@ -28,7 +28,7 @@ export const encrypt = (text) => {
   } catch (error) {
     logger.error(`Erro ao criptografar texto: ${error.message}`);
     return {
-      sucess: false,
+      success: false,
       message: 'Erro ao criptografar texto',
       error: error.message,
     };
@@ -45,23 +45,23 @@ export const decrypt = (encryptedText) => {
   try {
     if (!encryptedText) {
       return {
-        sucess: false,
+        success: false,
         message: 'Texto criptografado não fornecido',
       };
     }
 
     const decrypted = decryptText(encryptedText);
-    logger.info('Texto descriptografado com sucesso');
+    logger.info('Texto descriptografado com successo');
 
     return {
-      sucess: true,
+      success: true,
       decryptedText: decrypted,
       length: decrypted.length,
     };
   } catch (error) {
     logger.error(`Erro ao descriptografar texto: ${error.message}`);
     return {
-      sucess: false,
+      success: false,
       message: 'Erro ao descriptografar texto',
       error: error.message,
     };

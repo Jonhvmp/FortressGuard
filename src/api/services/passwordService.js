@@ -17,7 +17,7 @@ export const generatePassword = (length = 12, includeSpecial = true) => {
 
     const strength = evaluatePasswordStrength(password);
 
-    logger.info(`Senha gerada com sucesso (comprimento: ${passwordLength}, caracteres especiais: ${includeSpecial})`);
+    logger.info(`Senha gerada com successo (comprimento: ${passwordLength}, caracteres especiais: ${includeSpecial})`);
 
     return {
       password,
@@ -77,7 +77,7 @@ export const hashPassword = (password) => {
 
     const hash = generateHash(password);
 
-    logger.info('Hash gerado com sucesso');
+    logger.info('Hash gerado com successo');
 
     return hash;
   } catch (error) {

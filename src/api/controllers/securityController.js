@@ -25,7 +25,7 @@ export const generatePasswordController = (req, res) => {
     logger.info(`Senha gerada (comprimento: ${length}, especiais: ${includeSpecial})`);
 
     res.status(HTTP_STATUS.OK).json({
-      sucess: true,
+      success: true,
       data: {
         password: result.password,
         strength: result.strength,
@@ -41,7 +41,7 @@ export const generatePasswordController = (req, res) => {
     logger.error(`Erro ao gerar senha: ${error.message}`);
 
     res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
-      sucess: false,
+      success: false,
       message: 'Erro ao gerar senha',
       error: error.message,
     });
@@ -60,7 +60,7 @@ export const validatePasswordController = (req, res) => {
 
     if (!password) {
       return res.status(HTTP_STATUS.BAD_REQUEST).json({
-        sucess: false,
+        success: false,
         error: 'Parâmetro obrigatório ausente',
         message: 'O parâmetro "password" é obrigatório',
       });
@@ -75,7 +75,7 @@ export const validatePasswordController = (req, res) => {
     logger.info(`Senha validada: ${result.valid ? 'aprovada' : 'reprovada'}`);
 
     res.status(HTTP_STATUS.OK).json({
-      sucess: true,
+      success: true,
       data: {
         valid: result.valid,
         strength: result.strength,
@@ -88,7 +88,7 @@ export const validatePasswordController = (req, res) => {
     logger.error(`Erro ao validar senha: ${error.message}`);
 
     res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
-      sucess: false,
+      success: false,
       message: 'Falha ao validar senha',
       error: error.message,
     });
@@ -107,7 +107,7 @@ export const encryptTextController = (req, res) => {
 
     if (!text) {
       return res.status(HTTP_STATUS.BAD_REQUEST).json({
-        sucess: false,
+        success: false,
         error: 'Parâmetro obrigatório ausente',
         message: 'O parâmetro "text" é obrigatório',
       });
@@ -116,12 +116,12 @@ export const encryptTextController = (req, res) => {
     // chamar serviço p criptografar texto
     const result = encrypt(text);
 
-    recordEncryption(result.sucess);
+    recordEncryption(result.success);
 
-    logger.info(`Texto criptografado com sucesso`);
+    logger.info(`Texto criptografado com successo`);
 
     res.status(HTTP_STATUS.OK).json({
-      sucess: true,
+      success: true,
       data: {
         encryptedText: result.encryptedText,
         originalLength: result.originalLength,
@@ -133,7 +133,7 @@ export const encryptTextController = (req, res) => {
     logger.error(`Erro ao criptografar texto: ${error.message}`);
 
     res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
-      sucess: false,
+      success: false,
       message: 'Erro ao criptografar texto',
       error: error.message,
     });
@@ -150,10 +150,10 @@ export const getStatisticasController = (req, res) => {
   try {
     const stats = getStatistics();
 
-    logger.info(`Estatísticas recuperadas com sucesso`);
+    logger.info(`Estatísticas recuperadas com successo`);
 
     res.status(HTTP_STATUS.OK).json({
-      sucess: true,
+      success: true,
       data: {
         ...stats,
         timestamp: new Date().toISOString(),
@@ -168,7 +168,7 @@ export const getStatisticasController = (req, res) => {
     logger.error(`Erro ao recuperar estatísticas: ${error.message}`);
 
     res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
-      sucess: false,
+      success: false,
       message: 'Erro ao recuperar estatísticas',
       error: error.message,
     });

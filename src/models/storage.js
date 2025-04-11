@@ -30,7 +30,7 @@ export const recordPasswordGeneration = (strength) => {
     // add ao historico
     addToHistory('generate_password', { strength });
 
-    logger.debug('Estatísticas de geração de senha atualizadas com sucesso');
+    logger.debug('Estatísticas de geração de senha atualizadas com successo');
   } catch (error) {
     logger.error(`Erro ao registrar geração de senha: ${error.message}`);
   }
@@ -49,7 +49,7 @@ export const recordPasswordValidation = (strength, valid) => {
     // add ao historico
     addToHistory('validate_password', { strength, valid });
 
-    logger.debug('Estatísticas de validação de senha atualizadas com sucesso');
+    logger.debug('Estatísticas de validação de senha atualizadas com successo');
   } catch (error) {
     logger.error(`Erro ao registrar validação de senha: ${error.message}`);
   }
@@ -57,19 +57,19 @@ export const recordPasswordValidation = (strength, valid) => {
 
 /**
  * Registra uma operação de criptografia
- * @param {boolean} sucess - Se a operação foi bem-sucedida
+ * @param {boolean} success - Se a operação foi bem-sucedida
  */
 
-export const recordEncryption = (sucess) => {
+export const recordEncryption = (success) => {
   try {
-    if (sucess) {
+    if (success) {
       inMemoryStorage.stats.textEncrypted += 1;
     }
 
     // add ao historico
-    addToHistory('encrypt_text', { sucess });
+    addToHistory('encrypt_text', { success });
 
-    logger.debug('Estatísticas de criptografia atualizadas com sucesso');
+    logger.debug('Estatísticas de criptografia atualizadas com successo');
   } catch (error) {
     logger.error(`Erro ao registrar estatísticas de criptografia: ${error.message}`);
   }
