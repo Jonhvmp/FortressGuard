@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <title>FortressGuard API - Documentação</title>
+  <link rel="stylesheet" type="text/css" href="https://unpkg.com/swagger-ui-dist@5.0.0/swagger-ui.css">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+    .swagger-ui .topbar {
+      background-color: #2c3e50;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="swagger-ui"></div>
+
+  <script src="https://unpkg.com/swagger-ui-dist@5.0.0/swagger-ui-bundle.js"></script>
+  <script>
+    window.onload = function () {
+      SwaggerUIBundle({
+        url: "./swagger.json",
+        dom_id: '#swagger-ui',
+        deepLinking: true,
+        presets: [
+          SwaggerUIBundle.presets.apis,
+        ],
+        layout: "BaseLayout"
+      });
+    };
+  </script>
+</body>
+
+</html>

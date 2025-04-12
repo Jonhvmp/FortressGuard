@@ -17,7 +17,19 @@ const app = express();
 
 // midd
 app.use(helmet()); // seg c/ headers http
-app.use(cors());
+app.use(helmet.contentSecurityPolicy({
+  directives: {
+    defaultSrc: ["'self'"],
+    scriptSrc: ["'self'", "'unsafe-inline'"],
+    styleSrc: ["'self'", "'unsafe-inline'"],
+  },
+}));
+app.use(cors({
+  origin: environment.corsOrigin,
+  methods: environment.corsMethods,
+  allowedHeaders: environment.corsAllowedHeaders.split(','),
+  credentials: true
+}));
 app.use(compression());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

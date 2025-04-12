@@ -17,6 +17,13 @@ export default {
   jwtSecret: process.env.JWT_SECRET,
   encryptionKey: process.env.ENCRYPTION_KEY,
 
+  // Cors
+  corsOrigin: process.env.CORS_ORIGIN || "*",
+  corsMethods: process.env.CORS_METHODS || "GET",
+  corsAllowedHeaders: process.env.CORS_ALLOWED_HEADERS || "Content-Type,Authorization",
+  corsExposeHeaders: process.env.CORS_EXPOSE_HEADERS || "Content-Length",
+  corsCredentials: process.env.CORS_CREDENTIALS === "true",
+
   // Rate limiting
   rateLimit: {
     windowMs: parseInt(process.env.RATE_LIMIT_WINDOW_MS || "900000", 10),

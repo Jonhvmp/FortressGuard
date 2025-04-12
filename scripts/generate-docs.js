@@ -192,6 +192,47 @@ const swaggerDocument = {
         },
       },
     },
+    '/decrypt-text': {
+      get: {
+        tags: ['Encryption'],
+        summary: 'Descriptografa um texto fornecido',
+        parameters: [
+          {
+            name: 'encryptedText',
+            in: 'query',
+            schema: { type: 'string' },
+            description: 'Texto criptografado a ser descriptografado',
+            required: true,
+          },
+        ],
+        responses: {
+          200: {
+            description: 'Texto descriptografado com sucesso',
+            content: {
+              'application/json': {
+                schema: {
+                  type: 'object',
+                  properties: {
+                    success: { type: 'boolean', example: true },
+                    data: {
+                      type: 'object',
+                      properties: {
+                        decryptedText: { type: 'string', example: 'Texto original' },
+                        length: { type: 'integer', example: 13 },
+                        timestamp: { type: 'string', format: 'date-time' },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+          400: { description: 'Parâmetros inválidos ou formato incompatível' },
+          429: { description: 'Limite de requisições excedido' },
+          500: { description: 'Erro interno do servidor' },
+        },
+      },
+    },
     '/statistics': {
       get: {
         tags: ['Statistics'],
@@ -255,7 +296,7 @@ try {
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="refresh" content="0;url=/api/${environment.apiVersion}/docs">
+  <meta http-equiv="refresh" content="0;url=./swagger.html">
   <title>FortressGuard API - Documentação</title>
   <style>
     body {

@@ -10,7 +10,7 @@ import {
   generatePassword,
   validatePassword,
 } from "../services/passwordService.js";
-import { encrypt } from "../services/encryptionService.js";
+import { decrypt, encrypt } from "../services/encryptionService.js";
 // import { error } from "winston";
 
 /**
@@ -204,6 +204,63 @@ export const encryptTextController = (req, res) => {
     });
   }
 };
+
+/**
+ * Descriptografa um texto fornecido
+ * @param {Object} req - O objeto de requisição Express
+ * @param {Object} res - O objeto de resposta Express
+ *   @returns {boolean} success - Se a operação foi bem sucedida
+ *   @returns {string} [decryptedText] - O texto descriptografado (apenas se success=true)
+ *   @returns {number} [length] - Comprimento do texto descriptografado (apenas se success=true)
+ *   @returns {string} [message] - Mensagem descritiva (apenas se success=false)
+ *   @returns {string} [errorType] - Tipo do erro (apenas se success=false)
+ */
+
+export const decryptTextController = (req, res) => {
+  try {
+    const { encryptedText } = req.query;
+
+    if (!encryptedText) {
+      return res.status(HTTP_STATUS.BAD_REQUEST).json({
+        success: false,
+        error: "Parâmetro obrigatório ausente",
+        message: 'O parâmetro "encryptedText" é obrigatório',
+      });
+    }
+
+    const result = decrypt(encryptedText);
+
+    // Verificar se a descriptografia foi bem-sucedida
+    if (!result.success) {
+      logger.warn(`Falha na descriptografia: ${result.message}`);
+      return res.status(HTTP_STATUS.BAD_REQUEST).json({
+        success: false,
+        error: result.errorType || "Erro de descriptografia",
+        message: result.message || "Não foi possível descriptografar o texto fornecido",
+      });
+    }
+
+    logger.info(`Texto descriptografado com successo`);
+
+    res.status(HTTP_STATUS.OK).json({
+      success: true,
+      data: {
+        decryptedText: result.decryptedText,
+        length: result.length,
+        timestamp: new Date().toISOString(),
+      },
+    });
+  } catch (error) {
+    logger.error(`Erro ao descriptografar texto: ${error.message}`);
+
+    res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
+      success: false,
+      message: "Erro ao descriptografar texto",
+      error: error.message,
+    });
+  }
+}
+
 
 /**
  * Retorna stats de uso da API

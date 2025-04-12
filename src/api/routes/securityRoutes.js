@@ -1,5 +1,6 @@
 import express from "express";
 import {
+  decryptTextController,
   encryptTextController,
   generatePasswordController,
   getStatisticasController,
@@ -52,6 +53,23 @@ router.get(
  * @returns {Object} - Texto criptografado
  */
 router.get("/encrypt-text", rateLimiterMiddleware, encryptTextController);
+
+/**
+ * @route GET /api/decrypt-text
+ * @desc Descriptografa um texto
+ * @access Public
+ * @query {string} encryptedText - O texto a ser descriptografado
+ * @returns {Object} - Texto descriptografado
+ */
+router.get("/decrypt-text", rateLimiterMiddleware, decryptTextController);
+/**
+ * Exemplos de uso:
+ * GET /api/decrypt-text?encryptedText=IV:TextoCriptografado
+ * GET /api/decrypt-text?encryptedText=IV:TextoCriptografado
+ * GET /api/decrypt-text?encryptedText=IV:TextoCriptografado
+ * GET /api/decrypt-text?encryptedText=IV:TextoCriptografado
+ * GET /api/decrypt-text?encryptedText=IV:TextoCriptografado
+ */
 
 /**
  * @route GET /api/statistics
