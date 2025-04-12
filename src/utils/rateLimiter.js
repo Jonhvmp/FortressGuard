@@ -1,7 +1,7 @@
-import { RateLimiterMemory } from 'rate-limiter-flexible';
-import logger from './logger.js';
-import environment from '../config/environment.js';
-import { HTTP_STATUS } from '../config/constants.js';
+import { RateLimiterMemory } from "rate-limiter-flexible";
+import logger from "./logger.js";
+import environment from "../config/environment.js";
+import { HTTP_STATUS } from "../config/constants.js";
 
 /**
  * Configuração do rate limiter baseada nas configurações do ambiente
@@ -24,16 +24,16 @@ const rateLimiter = new RateLimiterMemory({
 export const rateLimiterMiddleware = async (req, res, next) => {
   try {
     await rateLimiter.consume(req.ip);
-    res.setHeader('X-RateLimit-Limit', rateLimiter.points);
-    res.setHeader('X-RateLimit-Remaining', rateLimiter.points - 1);
-    res.setHeader('X-RateLimit-Reset', rateLimiter.msBeforeNext / 1000);
+    res.setHeader("X-RateLimit-Limit", rateLimiter.points);
+    res.setHeader("X-RateLimit-Remaining", rateLimiter.points - 1);
+    res.setHeader("X-RateLimit-Reset", rateLimiter.msBeforeNext / 1000);
     next();
   } catch (err) {
     if (err.msBeforeNext) {
-      res.setHeader('Retry-After', Math.ceil(err.msBeforeNext / 1000));
+      res.setHeader("Retry-After", Math.ceil(err.msBeforeNext / 1000));
     }
     res.status(429).json({
-      message: 'Too many requests, please try again later.'
+      message: "Too many requests, please try again later.",
     });
   }
 };

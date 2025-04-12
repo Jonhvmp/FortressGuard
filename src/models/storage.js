@@ -13,10 +13,9 @@ const inMemoryStorage = {
       very_strong: 0,
     },
   },
-// Armazena os útimos 100 eventos (sem senhas/textos reais por segurança)
+  // Armazena os útimos 100 eventos (sem senhas/textos reais por segurança)
   history: [],
 };
-
 
 /**
  * Registra uma nova geração de senha nas estatísticas
@@ -28,9 +27,9 @@ export const recordPasswordGeneration = (strength) => {
     inMemoryStorage.stats.stregthDistribution[strength] += 1;
 
     // add ao historico
-    addToHistory('generate_password', { strength });
+    addToHistory("generate_password", { strength });
 
-    logger.debug('Estatísticas de geração de senha atualizadas com successo');
+    logger.debug("Estatísticas de geração de senha atualizadas com successo");
   } catch (error) {
     logger.error(`Erro ao registrar geração de senha: ${error.message}`);
   }
@@ -47,9 +46,9 @@ export const recordPasswordValidation = (strength, valid) => {
     inMemoryStorage.stats.passwordsValidated += 1;
 
     // add ao historico
-    addToHistory('validate_password', { strength, valid });
+    addToHistory("validate_password", { strength, valid });
 
-    logger.debug('Estatísticas de validação de senha atualizadas com successo');
+    logger.debug("Estatísticas de validação de senha atualizadas com successo");
   } catch (error) {
     logger.error(`Erro ao registrar validação de senha: ${error.message}`);
   }
@@ -67,11 +66,13 @@ export const recordEncryption = (success) => {
     }
 
     // add ao historico
-    addToHistory('encrypt_text', { success });
+    addToHistory("encrypt_text", { success });
 
-    logger.debug('Estatísticas de criptografia atualizadas com successo');
+    logger.debug("Estatísticas de criptografia atualizadas com successo");
   } catch (error) {
-    logger.error(`Erro ao registrar estatísticas de criptografia: ${error.message}`);
+    logger.error(
+      `Erro ao registrar estatísticas de criptografia: ${error.message}`,
+    );
   }
 };
 
@@ -106,7 +107,7 @@ const addToHistory = (action, details) => {
 
 export const getStatistics = () => {
   return { ...inMemoryStorage.stats };
-}
+};
 
 /**
  * Obtém o histórico de eventos recentes
@@ -115,6 +116,6 @@ export const getStatistics = () => {
  */
 
 export const getHistory = (limit = 10) => {
-  const actualLimit = Math.min(Math.max(1, limit), 100)
+  const actualLimit = Math.min(Math.max(1, limit), 100);
   return inMemoryStorage.history.slice(0, actualLimit);
 };

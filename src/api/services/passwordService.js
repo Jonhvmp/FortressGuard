@@ -1,5 +1,11 @@
-import { evaluatePasswordStrength, meetsMinimumRequirements } from "../../utils/passwordStrength.js";
-import { generateRandomString, generateHash } from "../../utils/cryptoHelpers.js";
+import {
+  evaluatePasswordStrength,
+  meetsMinimumRequirements,
+} from "../../utils/passwordStrength.js";
+import {
+  generateRandomString,
+  generateHash,
+} from "../../utils/cryptoHelpers.js";
 import logger from "../../utils/logger.js";
 
 /**
@@ -11,13 +17,18 @@ import logger from "../../utils/logger.js";
 
 export const generatePassword = (length = 12, includeSpecial = true) => {
   try {
-    const passwordLength = Math.min(Math.max(parseInt(length, 10) || 12, 6), 64);
+    const passwordLength = Math.min(
+      Math.max(parseInt(length, 10) || 12, 6),
+      64,
+    );
 
     const password = generateRandomString(passwordLength, includeSpecial);
 
     const strength = evaluatePasswordStrength(password);
 
-    logger.info(`Senha gerada com successo (comprimento: ${passwordLength}, caracteres especiais: ${includeSpecial})`);
+    logger.info(
+      `Senha gerada com successo (comprimento: ${passwordLength}, caracteres especiais: ${includeSpecial})`,
+    );
 
     return {
       password,
@@ -26,7 +37,7 @@ export const generatePassword = (length = 12, includeSpecial = true) => {
     };
   } catch (error) {
     logger.error(`Erro ao gerar senha: ${error.message}`);
-    throw new Error('Não foi possivel gerar uma senha segura');
+    throw new Error("Não foi possivel gerar uma senha segura");
   }
 };
 
@@ -41,14 +52,14 @@ export const validatePassword = (password) => {
     if (!password) {
       return {
         valid: false,
-        message: 'Senha não fornecida',
+        message: "Senha não fornecida",
       };
     }
 
     const evaluation = evaluatePasswordStrength(password);
     const isValid = meetsMinimumRequirements(password);
 
-    logger.info(`Senha validada: ${isValid ? 'aprovada' : 'reprovada'}`);
+    logger.info(`Senha validada: ${isValid ? "aprovada" : "reprovada"}`);
 
     return {
       valid: isValid,
@@ -59,7 +70,7 @@ export const validatePassword = (password) => {
     };
   } catch (error) {
     logger.error(`Erro na validação da senha: ${error.message}`);
-    throw new Error('Não foi possivel validar a senha');
+    throw new Error("Não foi possivel validar a senha");
   }
 };
 
@@ -72,16 +83,16 @@ export const validatePassword = (password) => {
 export const hashPassword = (password) => {
   try {
     if (!password) {
-      throw new Error('Senha não fornecida');
+      throw new Error("Senha não fornecida");
     }
 
     const hash = generateHash(password);
 
-    logger.info('Hash gerado com successo');
+    logger.info("Hash gerado com successo");
 
     return hash;
   } catch (error) {
     logger.error(`Erro ao gerar hash: ${error.message}`);
-    throw new Error('Não foi possivel gerar o hash da senha');
+    throw new Error("Não foi possivel gerar o hash da senha");
   }
-}
+};

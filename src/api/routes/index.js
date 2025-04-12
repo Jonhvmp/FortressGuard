@@ -6,12 +6,12 @@ import rateLimiterMiddleware from "../../utils/rateLimiter.js";
 
 const router = express.Router();
 
-router.get('/', rateLimiterMiddleware, (req, res) => {
+router.get("/", rateLimiterMiddleware, (req, res) => {
   res.status(HTTP_STATUS.OK).json({
-    name: 'FortressGuard API',
+    name: "FortressGuard API",
     version: environment.apiVersion,
-    description: 'API de segurança digital para proteção de dados e senhas',
-    author: 'Jonh Alex',
+    description: "API de segurança digital para proteção de dados e senhas",
+    author: "Jonh Alex",
     timestamp: new Date().toISOString(),
     endpoints: {
       generatePassword: `/api/${environment.apiVersion}/generate-password`,
@@ -24,6 +24,6 @@ router.get('/', rateLimiterMiddleware, (req, res) => {
 });
 
 // rotas de segurança
-router.use('/', securityRoutes);
+router.use("/", securityRoutes);
 
 export default router;

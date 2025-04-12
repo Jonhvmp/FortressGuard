@@ -1,8 +1,8 @@
 export const PASSWORD_STRENGTH = {
-  WEAK: 'weak',
-  MEDIUM: 'medium',
-  STRONG: 'strong',
-  VERY_STRONG: 'very_strong',
+  WEAK: "weak",
+  MEDIUM: "medium",
+  STRONG: "strong",
+  VERY_STRONG: "very_strong",
 };
 
 export const PASSWORD_CRITERIA = {
@@ -15,9 +15,9 @@ export const PASSWORD_CRITERIA = {
 };
 
 export const ENCRYPTION_ALGORITHMS = {
-  AES: 'aes-256-cbc',
-  SHA256: 'sha256',
-  BCRYPT: 'bcrypt',
+  AES: "aes-256-cbc",
+  SHA256: "sha256",
+  BCRYPT: "bcrypt",
 };
 
 export const HTTP_STATUS = {
@@ -31,9 +31,9 @@ export const HTTP_STATUS = {
 };
 
 export const ERROR_TYPES = {
-  VALIDATION_ERROR: 'ValidationError',
-  AUTHENTICATION_ERROR: 'AuthenticationError',
-  AUTHORIZATION_ERROR: 'AuthorizationError',
-  NOT_FOUND_ERROR: 'NotFoundError',
-  INTERNAL_ERROR: 'InternalError',
+  VALIDATION_ERROR: "ValidationError",
+  AUTHENTICATION_ERROR: "AuthenticationError",
+  AUTHORIZATION_ERROR: "AuthorizationError",
+  NOT_FOUND_ERROR: "NotFoundError",
+  INTERNAL_ERROR: "InternalError",
 };

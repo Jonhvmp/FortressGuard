@@ -3,9 +3,9 @@ import logger from "../../utils/logger.js";
 
 const MAX_PLAINTEXT_LENGTH = 1000;
 const ERROR_TYPES = {
-  VALIDATION: 'validation_error',
-  ENCRYPTION: 'encryption_error',
-  DECRYPTION: 'decryption_error',
+  VALIDATION: "validation_error",
+  ENCRYPTION: "encryption_error",
+  DECRYPTION: "decryption_error",
 };
 
 /**
@@ -25,15 +25,15 @@ export const encrypt = (text) => {
     if (!text) {
       return {
         success: false,
-        message: 'Texto não fornecido para criptografia',
+        message: "Texto não fornecido para criptografia",
         errorType: ERROR_TYPES.VALIDATION,
       };
     }
 
-    if (typeof text !== 'string') {
+    if (typeof text !== "string") {
       return {
         success: false,
-        message: 'Texto deve ser uma string',
+        message: "Texto deve ser uma string",
         errorType: ERROR_TYPES.VALIDATION,
       };
     }
@@ -54,17 +54,17 @@ export const encrypt = (text) => {
       };
     }
 
-    const sanitizedText = text.trim().replace(/[^a-zA-Z0-9 ]/g, '');
+    const sanitizedText = text.trim().replace(/[^a-zA-Z0-9 ]/g, "");
     if (sanitizedText.length === 0) {
       return {
         success: false,
-        message: 'Texto não pode conter apenas caracteres especiais',
+        message: "Texto não pode conter apenas caracteres especiais",
         errorType: ERROR_TYPES.VALIDATION,
       };
     }
 
     const encrypted = encryptText(sanitizedText);
-    logger.info('Texto criptografado com sucesso');
+    logger.info("Texto criptografado com sucesso");
 
     return {
       success: true,
@@ -72,15 +72,16 @@ export const encrypt = (text) => {
       originalLength: text.length,
       encryptedLength: encrypted.length,
       timestamp: new Date().toISOString(),
-      message: 'Criptografia realizada com sucesso',
+      message: "Criptografia realizada com sucesso",
     };
   } catch (error) {
     logger.error(`Erro ao criptografar texto: ${error.message}`);
     return {
       success: false,
-      message: 'Erro ao criptografar texto',
+      message: "Erro ao criptografar texto",
       errorType: ERROR_TYPES.ENCRYPTION,
-      errorDetails: process.env.NODE_ENV === 'development' ? error.message : undefined,
+      errorDetails:
+        process.env.NODE_ENV === "development" ? error.message : undefined,
     };
   }
 };
@@ -101,44 +102,45 @@ export const decrypt = (encryptedText) => {
     if (!encryptedText) {
       return {
         success: false,
-        message: 'Texto criptografado não fornecido para descriptografia',
+        message: "Texto criptografado não fornecido para descriptografia",
         errorType: ERROR_TYPES.VALIDATION,
       };
     }
 
-    if (typeof encryptedText !== 'string') {
+    if (typeof encryptedText !== "string") {
       return {
         success: false,
-        message: 'Texto criptografado deve ser uma string',
+        message: "Texto criptografado deve ser uma string",
         errorType: ERROR_TYPES.VALIDATION,
       };
     }
 
-    if (!encryptedText.includes(':') || encryptedText.split(':').length !== 2) {
+    if (!encryptedText.includes(":") || encryptedText.split(":").length !== 2) {
       return {
         success: false,
-        message: 'Formato de texto criptografado inválido',
+        message: "Formato de texto criptografado inválido",
         errorType: ERROR_TYPES.VALIDATION,
       };
     }
 
     const decrypted = decryptText(encryptedText);
-    logger.info('Texto descriptografado com sucesso');
+    logger.info("Texto descriptografado com sucesso");
 
     return {
       success: true,
       decryptedText: decrypted,
       length: decrypted.length,
       timestamp: new Date().toISOString(),
-      message: 'Descriptografia realizada com sucesso',
+      message: "Descriptografia realizada com sucesso",
     };
   } catch (error) {
     logger.error(`Erro ao descriptografar texto: ${error.message}`);
     return {
       success: false,
-      message: 'Erro ao descriptografar texto',
+      message: "Erro ao descriptografar texto",
       errorType: ERROR_TYPES.DECRYPTION,
-      errorDetails: process.env.NODE_ENV === 'development' ? error.message : undefined,
+      errorDetails:
+        process.env.NODE_ENV === "development" ? error.message : undefined,
     };
   }
 };

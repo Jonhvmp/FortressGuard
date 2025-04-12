@@ -1,7 +1,15 @@
 import { HTTP_STATUS } from "../../config/constants.js";
-import { getStatistics, recordEncryption, recordPasswordGeneration, recordPasswordValidation } from "../../models/storage.js";
+import {
+  getStatistics,
+  recordEncryption,
+  recordPasswordGeneration,
+  recordPasswordValidation,
+} from "../../models/storage.js";
 import logger from "../../utils/logger.js";
-import { generatePassword, validatePassword } from "../services/passwordService.js";
+import {
+  generatePassword,
+  validatePassword,
+} from "../services/passwordService.js";
 import { encrypt } from "../services/encryptionService.js";
 // import { error } from "winston";
 
@@ -13,23 +21,22 @@ import { encrypt } from "../services/encryptionService.js";
 
 export const generatePasswordController = (req, res) => {
   try {
-
     const MIN_LENGTH = 8;
     const MAX_LENGTH = 32;
 
-    const allowedParams = ['length', 'special'];
+    const allowedParams = ["length", "special"];
     const receivedParams = Object.keys(req.query);
 
-
-    const invalidParams = receivedParams.filter(param =>
-      !allowedParams.includes(param) && param !== ''
+    const invalidParams = receivedParams.filter(
+      (param) => !allowedParams.includes(param) && param !== "",
     );
 
     if (invalidParams.length > 0) {
       return res.status(HTTP_STATUS.BAD_REQUEST).json({
         success: false,
-        error: 'Parâmetros inválidos',
-        message: 'Os seguintes parâmetros são inválidos: ' + invalidParams.join(', '),
+        error: "Parâmetros inválidos",
+        message:
+          "Os seguintes parâmetros são inválidos: " + invalidParams.join(", "),
         allowedParams: allowedParams,
       });
     }
@@ -40,7 +47,7 @@ export const generatePasswordController = (req, res) => {
       if (!/^\d+$/.test(req.query.length)) {
         return res.status(HTTP_STATUS.BAD_REQUEST).json({
           success: false,
-          error: 'Parâmetro inválido',
+          error: "Parâmetro inválido",
           message: 'O parâmetro "length" deve ser um número inteiro positivo',
         });
       }
@@ -53,20 +60,24 @@ export const generatePasswordController = (req, res) => {
     if (length < MIN_LENGTH || length > MAX_LENGTH) {
       return res.status(HTTP_STATUS.BAD_REQUEST).json({
         success: false,
-        error: 'Parâmetro inválido',
+        error: "Parâmetro inválido",
         message: `O comprimento da senha deve ser entre ${MIN_LENGTH} e ${MAX_LENGTH} caracteres`,
       });
     }
 
-    if (req.query.special !== undefined && req.query.special !== 'true' && req.query.special !== 'false') {
+    if (
+      req.query.special !== undefined &&
+      req.query.special !== "true" &&
+      req.query.special !== "false"
+    ) {
       return res.status(HTTP_STATUS.BAD_REQUEST).json({
         success: false,
-        error: 'Formato inválido',
+        error: "Formato inválido",
         message: 'O parâmetro "special" deve ser "true" ou "false"',
       });
     }
 
-    const includeSpecial = req.query.special !== 'false'; // padrão é true
+    const includeSpecial = req.query.special !== "false"; // padrão é true
 
     // chamar serviço p gerar senha
     const result = generatePassword(length, includeSpecial);
@@ -74,7 +85,9 @@ export const generatePasswordController = (req, res) => {
     // registrar stats
     recordPasswordGeneration(result.strength);
 
-    logger.info(`Senha gerada (comprimento: ${length}, especiais: ${includeSpecial})`);
+    logger.info(
+      `Senha gerada (comprimento: ${length}, especiais: ${includeSpecial})`,
+    );
 
     res.status(HTTP_STATUS.OK).json({
       success: true,
@@ -87,14 +100,14 @@ export const generatePasswordController = (req, res) => {
           length,
           includeSpecial,
         },
-      }
+      },
     });
   } catch (error) {
     logger.error(`Erro ao gerar senha: ${error.message}`);
 
     res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
       success: false,
-      message: 'Erro ao gerar senha',
+      message: "Erro ao gerar senha",
       // error: error.message,
     });
   }
@@ -113,7 +126,7 @@ export const validatePasswordController = (req, res) => {
     if (!password) {
       return res.status(HTTP_STATUS.BAD_REQUEST).json({
         success: false,
-        error: 'Parâmetro obrigatório ausente',
+        error: "Parâmetro obrigatório ausente",
         message: 'O parâmetro "password" é obrigatório',
       });
     }
@@ -124,7 +137,7 @@ export const validatePasswordController = (req, res) => {
     // registrar stats
     recordPasswordValidation(result.strength, result.valid);
 
-    logger.info(`Senha validada: ${result.valid ? 'aprovada' : 'reprovada'}`);
+    logger.info(`Senha validada: ${result.valid ? "aprovada" : "reprovada"}`);
 
     res.status(HTTP_STATUS.OK).json({
       success: true,
@@ -141,7 +154,7 @@ export const validatePasswordController = (req, res) => {
 
     res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
       success: false,
-      message: 'Falha ao validar senha',
+      message: "Falha ao validar senha",
       error: error.message,
     });
   }
@@ -160,7 +173,7 @@ export const encryptTextController = (req, res) => {
     if (!text) {
       return res.status(HTTP_STATUS.BAD_REQUEST).json({
         success: false,
-        error: 'Parâmetro obrigatório ausente',
+        error: "Parâmetro obrigatório ausente",
         message: 'O parâmetro "text" é obrigatório',
       });
     }
@@ -179,7 +192,7 @@ export const encryptTextController = (req, res) => {
         originalLength: result.originalLength,
         encryptedLength: result.encryptedLength,
         timestamp: new Date().toISOString(),
-      }
+      },
     });
     console.log(`Texto criptografado: ${result.encryptedText}`);
   } catch (error) {
@@ -187,7 +200,7 @@ export const encryptTextController = (req, res) => {
 
     res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
       success: false,
-      message: 'Erro ao criptografar texto',
+      message: "Erro ao criptografar texto",
       error: error.message,
     });
   }
@@ -222,7 +235,7 @@ export const getStatisticasController = (req, res) => {
 
     res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
       success: false,
-      message: 'Erro ao recuperar estatísticas',
+      message: "Erro ao recuperar estatísticas",
       error: error.message,
     });
   }
