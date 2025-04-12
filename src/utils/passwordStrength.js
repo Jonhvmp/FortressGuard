@@ -40,7 +40,7 @@ export const evaluatePasswordStrength = (password) => {
     } else if (score <= 4) {
       strength = PASSWORD_STRENGTH.MEDIUM;
       feedback.push('A senha é média. Considere adicionar mais variedade.');
-    } else if (score <= 5) {
+    } else {
       strength = PASSWORD_STRENGTH.STRONG;
       feedback.push('A senha é forte. Boa escolha!');
     }

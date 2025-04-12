@@ -1,5 +1,6 @@
 import express from "express";
 import { encryptTextController, generatePasswordController, getStatisticasController, validatePasswordController } from "../controllers/securityController.js";
+import rateLimiterMiddleware from "../../utils/rateLimiter.js";
 
 const router = express.Router();
 
@@ -11,7 +12,7 @@ const router = express.Router();
  * @query {boolean} special - Se deve incluir caracteres especiais (opcional, padrão: true)
  * @returns {Object} - Senha gerada e sua classificação de segurança
  */
-router.get("/generate-password", generatePasswordController);
+router.get("/generate-password", rateLimiterMiddleware, generatePasswordController);
 /**
  * Exemplos de uso:
  * GET /api/generate-password?length=12&special=true
@@ -29,7 +30,7 @@ router.get("/generate-password", generatePasswordController);
  * @query {string} password - A senha a ser validada
  * @returns {Object} - Resultado da validação de segurança
  */
-router.get("/validate-password", validatePasswordController);
+router.get("/validate-password", rateLimiterMiddleware, validatePasswordController);
 
 /**
  * @route GET /api/encrypt-text
@@ -38,15 +39,15 @@ router.get("/validate-password", validatePasswordController);
  * @query {string} text - O texto a ser criptografado
  * @returns {Object} - Texto criptografado
  */
-router.get("/encrypt-text", encryptTextController);
+router.get("/encrypt-text", rateLimiterMiddleware, encryptTextController);
 
 /**
  * @route GET /api/statistics
- * @des Retorna estatísticas de uso da API
+ * @desc Retorna estatísticas de uso da API
  * @access Public
  * @returns {Object} - Estatísticas coletadas
  */
-router.get("/statistics", getStatisticasController);
+router.get("/statistics", rateLimiterMiddleware, getStatisticasController);
 
 export default router;
 

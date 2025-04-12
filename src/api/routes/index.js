@@ -2,10 +2,11 @@ import express from "express";
 import securityRoutes from "./securityRoutes.js";
 import environment from "../../config/environment.js";
 import { HTTP_STATUS } from "../../config/constants.js";
+import rateLimiterMiddleware from "../../utils/rateLimiter.js";
 
 const router = express.Router();
 
-router.get('/', (req, res) => {
+router.get('/', rateLimiterMiddleware, (req, res) => {
   res.status(HTTP_STATUS.OK).json({
     name: 'FortressGuard API',
     version: environment.apiVersion,

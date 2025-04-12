@@ -65,7 +65,7 @@ export const generatePasswordController = (req, res) => {
         message: 'O parâmetro "special" deve ser "true" ou "false"',
       });
     }
-    
+
     const includeSpecial = req.query.special !== 'false'; // padrão é true
 
     // chamar serviço p gerar senha
@@ -179,8 +179,9 @@ export const encryptTextController = (req, res) => {
         originalLength: result.originalLength,
         encryptedLength: result.encryptedLength,
         timestamp: new Date().toISOString(),
-      },
+      }
     });
+    console.log(`Texto criptografado: ${result.encryptedText}`);
   } catch (error) {
     logger.error(`Erro ao criptografar texto: ${error.message}`);
 

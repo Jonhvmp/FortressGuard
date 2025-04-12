@@ -6,6 +6,7 @@ import compression from "compression";
 import environment from "./config/environment.js";
 import logger from "./utils/logger.js";
 import routes from "./api/routes/index.js";
+import rateLimiterMiddleware from './utils/rateLimiter.js';
 
 const app = express();
 
@@ -30,6 +31,9 @@ app.get('/health', (req, res) => {
     environment: environment.nodeEnv,
   })
 });
+
+// Adicione antes das rotas
+app.use(rateLimiterMiddleware);
 
 // rotas da API
 app.use(`/api/${environment.apiVersion}`, routes);

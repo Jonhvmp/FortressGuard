@@ -3,7 +3,7 @@ import logger from "../utils/logger.js";
 // Armazenamento em memória para stats e histórico
 const inMemoryStorage = {
   stats: {
-    passwordsdGenerated: 0,
+    passwordsGenerated: 0,
     passwordsValidated: 0,
     textEncrypted: 0,
     stregthDistribution: {
@@ -24,7 +24,7 @@ const inMemoryStorage = {
  */
 export const recordPasswordGeneration = (strength) => {
   try {
-    inMemoryStorage.stats.passwordsdGenerated += 1;
+    inMemoryStorage.stats.passwordsGenerated += 1;
     inMemoryStorage.stats.stregthDistribution[strength] += 1;
 
     // add ao historico
