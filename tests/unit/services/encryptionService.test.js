@@ -117,6 +117,7 @@ describe('Encryption Service', () => {
       const result = decrypt('');
 
       expect(result).toHaveProperty('success', false);
+      // eslint-disable-next-line max-len
       expect(result).toHaveProperty('message', 'Texto criptografado não fornecido para descriptografia');
       expect(result).toHaveProperty('errorType', 'validation_error');
     });
@@ -143,6 +144,7 @@ describe('Encryption Service', () => {
       expect(result).toHaveProperty('success', false);
       expect(result).toHaveProperty('message', 'Erro ao descriptografar texto');
       expect(result).toHaveProperty('errorType', 'decryption_error');
+      // eslint-disable-next-line max-len
       expect(result).toHaveProperty('errorDetails', process.env.NODE_ENV === 'development' ? 'Erro simulado de decriptação' : undefined);
     });
   });

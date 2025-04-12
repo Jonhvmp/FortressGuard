@@ -9,7 +9,7 @@ import { HTTP_STATUS } from '../../../src/config/constants.js';
 
 // Mock dos serviços
 jest.mock('../../../src/api/services/passwordService.js', () => ({
-  generatePassword: jest.fn().mockImplementation((length) => ({
+  generatePassword: jest.fn().mockImplementation(() => ({
     password: 'senha_segura_teste',
     strength: 'strong',
     score: 6

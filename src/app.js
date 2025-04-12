@@ -49,7 +49,7 @@ app.use((req, res) => {
 });
 
 // midd err
-app.use((err, req, res, next) => {
+app.use((err, req, res) => {
   logger.error(`${err.name}: ${err.message}`);
 
   res.status(err.status || 500).json({

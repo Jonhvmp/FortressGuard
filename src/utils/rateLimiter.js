@@ -1,7 +1,5 @@
 import { RateLimiterMemory } from "rate-limiter-flexible";
-import logger from "./logger.js";
 import environment from "../config/environment.js";
-import { HTTP_STATUS } from "../config/constants.js";
 
 /**
  * Configuração do rate limiter baseada nas configurações do ambiente

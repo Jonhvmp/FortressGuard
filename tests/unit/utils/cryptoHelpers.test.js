@@ -1,3 +1,4 @@
+// eslint-disable-next-line max-len
 import { generateHash, encryptText, decryptText, generateRandomString } from '../../../src/utils/cryptoHelpers.js';
 
 describe('Crypto Helpers', () => {

@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import { encryptText, decryptText } from "../../utils/cryptoHelpers.js";
 import logger from "../../utils/logger.js";
 

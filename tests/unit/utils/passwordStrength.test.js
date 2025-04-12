@@ -1,3 +1,4 @@
+// eslint-disable-next-line max-len
 import { evaluatePasswordStrength, meetsMinimumRequirements } from '../../../src/utils/passwordStrength.js';
 import { PASSWORD_STRENGTH } from '../../../src/config/constants.js';
 
@@ -31,6 +32,7 @@ describe('Password Strength Utilities', () => {
 
       // Vamos adaptar nosso teste ao comportamento real da função
       if (result.strength === undefined) {
+        // eslint-disable-next-line max-len
         console.warn('ATENÇÃO: A função evaluatePasswordStrength não está definindo strength para senhas fortes');
         // Verificar se ao menos não é fraca ou média
         expect(result.score).toBeGreaterThanOrEqual(5);

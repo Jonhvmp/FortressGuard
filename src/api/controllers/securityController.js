@@ -194,7 +194,6 @@ export const encryptTextController = (req, res) => {
         timestamp: new Date().toISOString(),
       },
     });
-    console.log(`Texto criptografado: ${result.encryptedText}`);
   } catch (error) {
     logger.error(`Erro ao criptografar texto: ${error.message}`);
 

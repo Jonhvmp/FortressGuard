@@ -59,6 +59,7 @@ describe('Rate Limiter', () => {
     await rateLimiterMiddleware(req, res, next);
 
     expect(next).toHaveBeenCalled();
+    // eslint-disable-next-line max-len
     expect(res.setHeader).toHaveBeenCalledTimes(3); // Verifica que os headers de rate limit foram definidos
   });
 
@@ -69,6 +70,7 @@ describe('Rate Limiter', () => {
     const next = jest.fn();
 
     // Crie um novo limiter especificamente para o teste
+    // eslint-disable-next-line no-unused-vars
     const testLimiter = new RateLimiterMemory({
       points: 1,
       duration: 1,

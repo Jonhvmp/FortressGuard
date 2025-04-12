@@ -27,6 +27,7 @@ export const generatePassword = (length = 12, includeSpecial = true) => {
     const strength = evaluatePasswordStrength(password);
 
     logger.info(
+      // eslint-disable-next-line max-len
       `Senha gerada com successo (comprimento: ${passwordLength}, caracteres especiais: ${includeSpecial})`,
     );
 
