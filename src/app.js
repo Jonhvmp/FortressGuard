@@ -7,6 +7,11 @@ import environment from "./config/environment.js";
 import logger from "./utils/logger.js";
 import routes from "./api/routes/index.js";
 import rateLimiterMiddleware from "./utils/rateLimiter.js";
+import swaggerUi from 'swagger-ui-express';
+import YAML from 'yamljs';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 const app = express();
 
@@ -25,6 +30,19 @@ app.use(
     },
   }),
 );
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const swaggerPath = path.join(__dirname, '../docs/api/swagger.yaml');
+
+if (fs.existsSync(swaggerPath)) {
+  const swaggerDocument = YAML.load(swaggerPath);
+  app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+  app.use(`/api/${environment.apiVersion}/docs`, swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+} else {
+  // eslint-disable-next-line max-len
+  logger.warn('Arquivo de documentação Swagger não encontrado. Execute npm run docs:generate primeiro.');
+}
 
 app.get("/health", (req, res) => {
   res.status(200).json({

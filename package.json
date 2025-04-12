@@ -29,7 +29,7 @@
     "nodejs",
     "express"
   ],
-  "author": "Jonhvmpok",
+  "author": "Jonhvmp",
   "license": "MIT",
   "dependencies": {
     "bcrypt": "^5.1.1",

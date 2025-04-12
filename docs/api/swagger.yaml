@@ -1,0 +1,121 @@
+openapi: 3.0.0
+info:
+    title: 'FortressGuard API'
+    version: v1
+    description: 'API de Segurança Digital para geração e validação de senhas seguras e criptografia de texto'
+    contact:
+        name: Jonhvmp
+        url: 'https://github.com/Jonhvmp/fortressguard'
+    license:
+        name: MIT
+        url: 'https://opensource.org/licenses/MIT'
+servers:
+    -
+        url: 'http://localhost:3000/api/v1'
+        description: 'Servidor local de desenvolvimento'
+    -
+        url: 'https://fortressguard.orrender.app/api/v1'
+        description: 'Servidor de produção'
+tags:
+    -
+        name: Passwords
+        description: 'Operações relacionadas à geração e validação de senhas'
+    -
+        name: Encryption
+        description: 'Operações relacionadas à criptografia e segurança'
+    -
+        name: Statistics
+        description: 'Estatísticas e métricas da API'
+paths:
+    /generate-password:
+        get:
+            tags:
+                - Passwords
+            summary: 'Gera uma senha segura'
+            description: 'Gera uma senha segura com base nos parâmetros fornecidos'
+            parameters:
+                -
+                    name: length
+                    in: query
+                    schema: {type: integer, default: 12}
+                    description: 'Comprimento da senha a ser gerada'
+                    required: false
+                -
+                    name: special
+                    in: query
+                    schema: {type: boolean, default: true}
+                    description: 'Se deve incluir caracteres especiais na senha'
+                    required: false
+            responses:
+                '200':
+                    description: 'Senha gerada com sucesso'
+                    content: {application/json: {schema: {type: object, properties: {success: {type: boolean, example: true}, data: {type: object, properties: {password: {type: string, example: P@ssw0rd!2023}, strength: {type: string, example: strong}, score: {type: integer, example: 6}, timestamp: {type: string, format: date-time}}}}}}}
+                '400':
+                    description: 'Parâmetros inválidos'
+                '429':
+                    description: 'Limite de requisições excedido'
+                '500':
+                    description: 'Erro interno do servidor'
+    /validate-password:
+        get:
+            tags:
+                - Passwords
+            summary: 'Valida a força de uma senha'
+            parameters:
+                -
+                    name: password
+                    in: query
+                    schema: {type: string}
+                    description: 'Senha a ser validada'
+                    required: true
+            responses:
+                '200':
+                    description: 'Resultado da validação da senha'
+                    content: {application/json: {schema: {type: object, properties: {success: {type: boolean, example: true}, data: {type: object, properties: {valid: {type: boolean, example: true}, strength: {type: string, example: strong}, score: {type: integer, example: 6}, feedback: {type: string, example: 'A senha é forte. Boa escolha!'}}}}}}}
+                '400':
+                    description: 'Parâmetros inválidos'
+                '429':
+                    description: 'Limite de requisições excedido'
+                '500':
+                    description: 'Erro interno do servidor'
+    /encrypt-text:
+        get:
+            tags:
+                - Encryption
+            summary: 'Criptografa um texto fornecido'
+            parameters:
+                -
+                    name: text
+                    in: query
+                    schema: {type: string}
+                    description: 'Texto a ser criptografado'
+                    required: true
+            responses:
+                '200':
+                    description: 'Texto criptografado com sucesso'
+                    content: {application/json: {schema: {type: object, properties: {success: {type: boolean, example: true}, data: {type: object, properties: {encryptedText: {type: string, example: 'iv-12345:AABCDEF123456789'}, originalLength: {type: integer, example: 12}, encryptedLength: {type: integer, example: 32}, timestamp: {type: string, format: date-time}}}}}}}
+                '400':
+                    description: 'Parâmetros inválidos'
+                '429':
+                    description: 'Limite de requisições excedido'
+                '500':
+                    description: 'Erro interno do servidor'
+    /statistics:
+        get:
+            tags:
+                - Statistics
+            summary: 'Retorna estatísticas de uso da API'
+            responses:
+                '200':
+                    description: 'Estatísticas recuperadas com sucesso'
+                    content: {application/json: {schema: {type: object, properties: {success: {type: boolean, example: true}, data: {type: object, properties: {passwordsGenerated: {type: integer, example: 152}, passwordsValidated: {type: integer, example: 89}, textEncrypted: {type: integer, example: 43}, timestamp: {type: string, format: date-time}, serverInfo: {type: object}}}}}}}
+                '429':
+                    description: 'Limite de requisições excedido'
+                '500':
+                    description: 'Erro interno do servidor'
+components:
+    securitySchemes:
+        ApiKeyAuth:
+            type: apiKey
+            in: header
+            name: X-API-Key
