@@ -24,12 +24,17 @@ app.use(helmet.contentSecurityPolicy({
     styleSrc: ["'self'", "'unsafe-inline'"],
   },
 }));
+
+// Configurar CORS de forma mais permissiva para desenvolvimento
 app.use(cors({
-  origin: environment.corsOrigin,
-  methods: environment.corsMethods,
-  allowedHeaders: environment.corsAllowedHeaders.split(','),
-  credentials: true
+  origin: '*', // Permitir qualquer origem em desenvolvimento
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  allowedHeaders: 'Content-Type,Authorization',
+  credentials: true,
+  preflightContinue: false,
+  optionsSuccessStatus: 204
 }));
+
 app.use(compression());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

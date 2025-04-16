@@ -7,8 +7,8 @@ import environment from "../config/environment.js";
  * - max: número máximo de requisições por janela de tempo
  */
 const rateLimiter = new RateLimiterMemory({
-  points: environment.rateLimit.max, // Número máximo de requisições
-  duration: environment.rateLimit.windowMs / 1000, // Converte ms para segundos
+  points: environment.rateLimit.max,
+  duration: environment.rateLimit.windowMs / 1000,
   blockDuration: 60 * 5, // Bloqueia por 5 minutos após exceder limite
 });
 

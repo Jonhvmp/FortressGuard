@@ -8,7 +8,7 @@ import { ENCRYPTION_ALGORITHMS } from "../config/constants.js";
 const ENCRYPTION_KEY = crypto.scryptSync(
   environment.encryptionKey,
   "fortressguard-salt", // Sal fixo para garantir determinismo
-  32, // Exatamente 32 bytes (256 bits)
+  32,
 );
 
 /**
