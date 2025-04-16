@@ -17,7 +17,7 @@
     "test:coverage": "node --experimental-vm-modules node_modules/jest/bin/jest.js --coverage",
     "docs:generate": "node scripts/generate-docs.js",
     "docs:serve": "npx serve docs/api",
-    "prepare": "husky install",
+    "prepare": "[ -z \"$CI\" ] && husky install || echo 'Skipping husky install in CI environment'",
     "install:windows": "npm install --no-optional",
     "setup:windows": "npm install --global windows-build-tools && npm install"
   },
