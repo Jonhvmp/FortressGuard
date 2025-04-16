@@ -1,6 +1,7 @@
 /* eslint-disable max-len */
 import { encryptText, decryptText } from "../../utils/cryptoHelpers.js";
 import logger from "../../utils/logger.js";
+import { removeControlCharacters } from "../../utils/removeCharacters.js";
 
 const MAX_PLAINTEXT_LENGTH = 1000;
 const ERROR_TYPES = {
@@ -47,24 +48,17 @@ export const encrypt = (text) => {
       };
     }
 
-    if (text.length > MAX_PLAINTEXT_LENGTH) {
+    const trimmedText = removeControlCharacters(text.trim());
+
+    if (trimmedText.length === 0) {
       return {
         success: false,
-        message: `Texto deve ter no máximo ${MAX_PLAINTEXT_LENGTH} caracteres`,
+        message: "Texto não pode estar vazio ou conter apenas caracteres inválidos",
         errorType: ERROR_TYPES.VALIDATION,
       };
     }
 
-    const sanitizedText = text.trim().replace(/[^a-zA-Z0-9 ]/g, "");
-    if (sanitizedText.length === 0) {
-      return {
-        success: false,
-        message: "Texto não pode conter apenas caracteres especiais",
-        errorType: ERROR_TYPES.VALIDATION,
-      };
-    }
-
-    const encrypted = encryptText(sanitizedText);
+    const encrypted = encryptText(trimmedText);
     logger.info("Texto criptografado com sucesso");
 
     return {
