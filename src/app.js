@@ -25,12 +25,12 @@ app.use(helmet.contentSecurityPolicy({
   },
 }));
 
-// Configurar CORS de forma mais permissiva para desenvolvimento
+// Configurar CORS adequadamente para produção
 app.use(cors({
-  origin: '*', // Permitir qualquer origem em desenvolvimento
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  allowedHeaders: 'Content-Type,Authorization',
-  credentials: true,
+  origin: environment.isProd ? environment.corsOrigin : '*',
+  methods: environment.corsMethods || 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  allowedHeaders: environment.corsAllowedHeaders || 'Content-Type,Authorization',
+  credentials: environment.corsCredentials || true,
   preflightContinue: false,
   optionsSuccessStatus: 204
 }));
@@ -52,12 +52,28 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const swaggerPath = path.join(__dirname, '../docs/api/swagger.yaml');
 
+// Configuração do swagger modificada para usar CDN confiável
 if (fs.existsSync(swaggerPath)) {
   const swaggerDocument = YAML.load(swaggerPath);
-  app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-  app.use(`/api/${environment.apiVersion}/docs`, swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-} else {
+  const swaggerUiOptions = {
+    swaggerOptions: {
+      url: `/docs/swagger.json`,
+    },
+    customCss: '.swagger-ui .topbar { display: none }',
+    explorer: true
+  };
+
+  // Servir o arquivo swagger.json diretamente
+  app.get('/docs/swagger.json', (req, res) => {
+    res.setHeader('Content-Type', 'application/json');
+    res.send(JSON.stringify(swaggerDocument));
+  });
+
+  app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, swaggerUiOptions));
   // eslint-disable-next-line max-len
+  app.use(`/api/${environment.apiVersion}/docs`, swaggerUi.serve, swaggerUi.setup(swaggerDocument, swaggerUiOptions));
+} else {
+// eslint-disable-next-line max-len
   logger.warn('Arquivo de documentação Swagger não encontrado. Execute npm run docs:generate primeiro.');
 }
 
@@ -83,15 +99,16 @@ app.use((req, res) => {
   });
 });
 
-// midd err
-app.use((err, req, res) => {
-  logger.error(`${err.name}: ${err.message}`);
+// midd err - CORRIGIDO
+app.use((err, req, res, next) => {
+  logger.error(`${err.name}: ${err.message}`, err);
 
   res.status(err.status || 500).json({
     error: err.name || "InternalServerError",
     message: environment.isProd ? "An unexpected error occurred" : err.message,
     ...(environment.isProd ? {} : { stack: err.stack }),
   });
+  next();
 });
 
 export default app;
